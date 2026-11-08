@@ -1,0 +1,17 @@
+{
+  "name": "Spin Wheel Studio",
+  "short_name": "Spin Wheel",
+  "description": "Custom decision spinner & random choice maker. Offline-ready.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ],
+  "categories": ["utilities", "games", "productivity"],
+  "lang": "en"
+}
