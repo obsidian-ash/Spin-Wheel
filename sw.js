@@ -1,5 +1,5 @@
 // Bump this number whenever you update the app so users get the new version.
-const CACHE = 'spin-wheel-v3';
+const CACHE = 'spin-wheel-v4';
 
 const LOCAL_ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 const CDN_ASSETS = [

@@ -89,17 +89,37 @@
         <div class="max-w-7xl mx-auto flex justify-between items-center gap-2">
             <div class="flex items-center gap-2.5 min-w-0">
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-rose-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 shrink-0">
-                    <i class="fa-solid fa-dharmachakra text-lg"></i>
+                    <i id="logoIcon" class="fa-solid fa-dharmachakra text-lg"></i>
                 </div>
                 <div class="min-w-0">
-                    <h1 class="text-lg font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent truncate">
+                    <h1 id="appTitle" class="text-lg font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent truncate">
                         Spin Wheel
                     </h1>
-                    <p class="text-[10px] text-slate-500 hidden xs:block">Decision Maker</p>
+                    <p id="appSubtitle" class="text-[10px] text-slate-500 hidden xs:block">Decision Maker</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-1.5 sm:gap-2">
+
+                <div class="relative">
+                    <button id="modeBtn" aria-haspopup="menu" aria-expanded="false" title="Choose game" aria-label="Choose game" class="px-3 py-2.5 rounded-xl bg-indigo-600/90 hover:bg-indigo-500 text-white transition border border-indigo-400/40 flex items-center gap-2 text-sm font-semibold">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <span id="modeLabel" class="hidden xs:inline">Roulette</span>
+                        <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div id="modeMenu" role="menu" class="hidden absolute right-0 top-full mt-2 w-60 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-1.5 z-40">
+                        <button role="menuitem" data-mode="wheel" class="mode-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-left">
+                            <i class="fa-solid fa-dharmachakra w-5 text-center text-rose-400"></i>
+                            <span class="flex-1"><span class="block text-sm font-semibold">Custom Roulette Wheel</span><span class="block text-[11px] text-slate-400">Spin to decide</span></span>
+                            <i class="fa-solid fa-check text-emerald-400 mode-check"></i>
+                        </button>
+                        <button role="menuitem" data-mode="dice" class="mode-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 text-left">
+                            <i class="fa-solid fa-dice w-5 text-center text-indigo-400"></i>
+                            <span class="flex-1"><span class="block text-sm font-semibold">Dice Throw</span><span class="block text-[11px] text-slate-400">D4 to D100, any amount</span></span>
+                            <i class="fa-solid fa-check text-emerald-400 mode-check"></i>
+                        </button>
+                    </div>
+                </div>
                 <button id="historyBtn" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition border border-slate-700/50" title="Winner History" aria-label="Winner History">
                     <i class="fa-solid fa-clock-rotate-left"></i>
                 </button>
@@ -114,7 +134,7 @@
     </header>
 
     <!-- Main -->
-    <main class="max-w-7xl mx-auto w-full p-3 sm:p-5 md:p-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+    <main id="wheelView" class="max-w-7xl mx-auto w-full p-3 sm:p-5 md:p-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
         <!-- Wheel Stage -->
         <section class="lg:col-span-7 flex flex-col items-center justify-center relative min-h-[420px] sm:min-h-[520px] bg-slate-950/50 border border-slate-800/70 rounded-3xl p-3 sm:p-6">
@@ -255,6 +275,24 @@
             </div>
         </section>
     </main>
+
+    <!-- Dice view -->
+    <section id="diceView" class="hidden max-w-4xl mx-auto w-full p-3 sm:p-5 md:p-6 flex-1">
+        <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-4 sm:p-6">
+            <h2 class="text-lg font-bold">Choose your dice</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Set how many of each die to throw at once (up to 20 each).</p>
+            <div id="diceGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4"></div>
+            <div class="flex gap-2 mt-5">
+                <button id="rollBtn" class="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-500 to-rose-500 hover:brightness-110 active:scale-[0.98] transition font-extrabold text-lg shadow-lg shadow-indigo-500/25">
+                    <i class="fa-solid fa-dice mr-2"></i>Roll
+                </button>
+                <button id="diceResetBtn" class="px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-semibold">Reset</button>
+            </div>
+        </div>
+        <div id="diceResults" class="mt-4 bg-slate-900/70 border border-slate-800 rounded-3xl p-4 sm:p-6" aria-live="polite">
+            <p class="text-slate-400 text-sm text-center">Pick your dice and press Roll.</p>
+        </div>
+    </section>
 
     <!-- Toast -->
     <div id="toastNotification" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 opacity-0 -translate-y-4 pointer-events-none px-3 w-full max-w-sm">
@@ -1079,6 +1117,123 @@
                 navigator.serviceWorker.register('sw.js').catch(() => {});
             }
         });
+    </script>
+
+    <script>
+    // ===== Game mode + Dice roller =====
+    (() => {
+        const $ = (id) => document.getElementById(id);
+        const DICE = [
+            { s: 4,   color: '#f43f5e', clip: 'polygon(50% 4%, 96% 92%, 4% 92%)' },
+            { s: 6,   color: '#6366f1', clip: 'inset(4% round 18%)' },
+            { s: 8,   color: '#10b981', clip: 'polygon(50% 0, 100% 50%, 50% 100%, 0 50%)' },
+            { s: 10,  color: '#f59e0b', clip: 'polygon(50% 0, 96% 40%, 50% 100%, 4% 40%)' },
+            { s: 12,  color: '#06b6d4', clip: 'polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%)' },
+            { s: 100, color: '#a855f7', clip: 'circle(50%)' }
+        ];
+        const MAX = 20;
+        let counts = { 4: 0, 6: 1, 8: 0, 10: 0, 12: 0, 100: 0 };
+        let rolling = false;
+
+        try {
+            const saved = JSON.parse(localStorage.getItem('spinwheel_dice') || 'null');
+            if (saved) DICE.forEach(d => { const n = parseInt(saved[d.s], 10); if (n >= 0 && n <= MAX) counts[d.s] = n; });
+        } catch (e) {}
+        const save = () => { try { localStorage.setItem('spinwheel_dice', JSON.stringify(counts)); } catch (e) {} };
+        const shape = (d, size, text, fs) => `<div class="flex items-center justify-center font-extrabold text-white shrink-0" style="width:${size}px;height:${size}px;background:${d.color};clip-path:${d.clip};font-size:${fs}px">${text}</div>`;
+
+        function renderGrid() {
+            $('diceGrid').innerHTML = DICE.map(d => `
+                <div class="rounded-2xl border p-3 flex flex-col items-center gap-2 ${counts[d.s] ? 'border-indigo-400/60 bg-indigo-500/10' : 'border-slate-700 bg-slate-800/50'}">
+                    ${shape(d, 56, 'D' + d.s, d.s === 100 ? 13 : 15)}
+                    <div class="flex items-center gap-2">
+                        <button data-die="${d.s}" data-step="-1" aria-label="Fewer D${d.s}" class="w-9 h-9 rounded-xl bg-slate-700 hover:bg-slate-600 text-lg font-bold">&minus;</button>
+                        <span class="w-8 text-center text-xl font-extrabold tabular-nums">${counts[d.s]}</span>
+                        <button data-die="${d.s}" data-step="1" aria-label="More D${d.s}" class="w-9 h-9 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-lg font-bold">+</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        $('diceGrid').addEventListener('click', (e) => {
+            const b = e.target.closest('button[data-die]');
+            if (!b || rolling) return;
+            const k = b.dataset.die;
+            counts[k] = Math.min(MAX, Math.max(0, counts[k] + parseInt(b.dataset.step, 10)));
+            save(); renderGrid();
+        });
+        $('diceResetBtn').addEventListener('click', () => {
+            if (rolling) return;
+            DICE.forEach(d => counts[d.s] = 0);
+            save(); renderGrid();
+            $('diceResults').innerHTML = '<p class="text-slate-400 text-sm text-center">Pick your dice and press Roll.</p>';
+        });
+
+        const rnd = (n) => Math.floor(Math.random() * n) + 1;
+
+        function showResults(vals, final) {
+            // vals: { sides: [numbers] }
+            let total = 0, rows = '';
+            DICE.filter(d => vals[d.s]).forEach(d => {
+                const sum = vals[d.s].reduce((a, b) => a + b, 0);
+                total += sum;
+                rows += `<div class="py-3 border-t border-slate-800 first:border-0">
+                    <div class="flex justify-between text-sm mb-2"><span class="font-semibold text-slate-300">${vals[d.s].length} &times; D${d.s}</span><span class="font-bold text-slate-100">${sum}</span></div>
+                    <div class="flex flex-wrap gap-2">${vals[d.s].map(v => shape(d, 46, v, v > 99 ? 12 : 16)).join('')}</div></div>`;
+            });
+            $('diceResults').innerHTML = `<div class="text-center mb-2"><div class="text-xs uppercase tracking-widest text-slate-400">Total</div>
+                <div class="text-5xl font-extrabold ${final ? 'text-emerald-300' : 'text-slate-500'} tabular-nums">${total}</div></div>${rows}`;
+        }
+
+        $('rollBtn').addEventListener('click', () => {
+            if (rolling) return;
+            const active = DICE.filter(d => counts[d.s] > 0);
+            if (!active.length) { $('diceResults').innerHTML = '<p class="text-amber-300 text-sm text-center">Add at least one die first.</p>'; return; }
+            rolling = true; $('rollBtn').disabled = true; $('rollBtn').classList.add('opacity-60');
+            const gen = () => { const v = {}; active.forEach(d => v[d.s] = Array.from({ length: counts[d.s] }, () => rnd(d.s))); return v; };
+            let frames = 0;
+            const timer = setInterval(() => {
+                frames++;
+                showResults(gen(), false);
+                if (frames % 2 === 0 && typeof playTickSound === 'function') playTickSound();
+                if (frames >= 11) {
+                    clearInterval(timer);
+                    showResults(gen(), true);
+                    if (typeof vibrate === 'function') vibrate([20, 30, 20]);
+                    rolling = false; $('rollBtn').disabled = false; $('rollBtn').classList.remove('opacity-60');
+                }
+            }, 65);
+        });
+
+        // ---- Mode switching ----
+        const menu = $('modeMenu'), btn = $('modeBtn');
+        const closeMenu = () => { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); };
+        btn.addEventListener('click', (e) => { e.stopPropagation(); const open = menu.classList.toggle('hidden') === false; btn.setAttribute('aria-expanded', open); });
+        document.addEventListener('click', (e) => { if (!menu.contains(e.target)) closeMenu(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+        function setMode(mode, persist = true) {
+            if (typeof isSpinning !== 'undefined' && isSpinning) { closeMenu(); return; }
+            const dice = mode === 'dice';
+            $('wheelView').classList.toggle('hidden', dice);
+            $('diceView').classList.toggle('hidden', !dice);
+            $('historyBtn').classList.toggle('hidden', dice);
+            $('appTitle').textContent = dice ? 'Dice Roller' : 'Spin Wheel';
+            $('appSubtitle').textContent = dice ? 'D4 to D100' : 'Decision Maker';
+            $('logoIcon').className = 'fa-solid text-lg ' + (dice ? 'fa-dice' : 'fa-dharmachakra');
+            $('modeLabel').textContent = dice ? 'Dice' : 'Roulette';
+            menu.querySelectorAll('.mode-item').forEach(i => i.querySelector('.mode-check').style.visibility = i.dataset.mode === mode ? 'visible' : 'hidden');
+            document.title = dice ? 'Dice Roller' : 'Spin Wheel Studio';
+            closeMenu();
+            if (!dice && typeof drawWheel === 'function') requestAnimationFrame(drawWheel);
+            if (persist) { try { localStorage.setItem('spinwheel_mode', mode); } catch (e) {} }
+        }
+        menu.querySelectorAll('.mode-item').forEach(i => i.addEventListener('click', () => setMode(i.dataset.mode)));
+
+        renderGrid();
+        let startMode = 'wheel';
+        try { startMode = localStorage.getItem('spinwheel_mode') === 'dice' ? 'dice' : 'wheel'; } catch (e) {}
+        setMode(startMode, false);
+    })();
     </script>
 </body>
 </html>
